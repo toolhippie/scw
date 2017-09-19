@@ -19,7 +19,7 @@ pipeline:
       - CGO_ENABLED=0
     commands:
       - go get -u -d github.com/scaleway/scaleway-cli/cmd/scw
-      - go build -v -a -o release/linux/amd64/scw
+      - go build -v -a -o release/linux/amd64/scw github.com/scaleway/scaleway-cli/cmd/scw
 
   publish_linux_amd64:
     image: plugins/docker:17.05
