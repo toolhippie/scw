@@ -1,0 +1,51 @@
+workspace:
+  base: /srv/app
+  path: src/github.com/toolhippie/scw
+
+clone:
+  git:
+    image: plugins/git
+    pull: true
+    tags: true
+
+pipeline:
+  build_linux_amd64:
+    image: webhippie/golang:edge
+    pull: true
+    environment:
+      - GOPATH=/srv/app
+      - GOOS=linux
+      - GOARCH=amd64
+      - CGO_ENABLED=0
+    commands:
+      - go get -u -d github.com/scaleway/scaleway-cli/cmd/scw
+      - go build -v -a -o release/linux/amd64/scw
+
+  publish_linux_amd64:
+    image: plugins/docker:17.05
+    pull: true
+    secrets: [ docker_username, docker_password ]
+    repo: toolhippie/scw
+    tags: [ latest ]
+    dockerfile: Dockerfile
+    when:
+      event: [ push ]
+      branch: [ master ]
+
+  microbadger:
+    image: plugins/webhook:1
+    pull: true
+    secrets:
+      - source: webhook_urls
+        target: plugin_urls
+    when:
+      event: [ push ]
+      branch: [ master ]
+
+  gitter:
+    image: plugins/gitter:1
+    pull: true
+    secrets: [ gitter_webhook ]
+    when:
+      local: false
+      status: [ success, failure ]
