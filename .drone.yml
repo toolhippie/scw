@@ -1,51 +1,204 @@
-workspace:
-  base: /srv/app
-  path: src/github.com/toolhippie/scw
+---
+kind: pipeline
+name: amd64
 
-clone:
-  git:
-    image: plugins/git
-    pull: true
-    tags: true
+platform:
+  os: linux
+  arch: amd64
 
-pipeline:
-  build_linux_amd64:
-    image: webhippie/golang:edge
-    pull: true
-    environment:
-      - GOPATH=/srv/app
-      - GOOS=linux
-      - GOARCH=amd64
-      - CGO_ENABLED=0
-    commands:
-      - go get -u -d github.com/scaleway/scaleway-cli/cmd/scw
-      - go build -v -a -o release/linux/amd64/scw github.com/scaleway/scaleway-cli/cmd/scw
-
-  publish_linux_amd64:
-    image: plugins/docker:17.05
-    pull: true
-    secrets: [ docker_username, docker_password ]
+steps:
+- name: dryrun
+  pull: always
+  image: plugins/docker:latest
+  settings:
     repo: toolhippie/scw
-    tags: [ latest ]
-    dockerfile: Dockerfile
-    when:
-      event: [ push ]
-      branch: [ master ]
+    tags: amd64
+    dockerfile: Dockerfile.amd64
+    dry_run: true
+  when:
+    event:
+    - pull_request
 
-  microbadger:
-    image: plugins/webhook:1
-    pull: true
-    secrets:
-      - source: webhook_urls
-        target: plugin_urls
-    when:
-      event: [ push ]
-      branch: [ master ]
+- name: publish
+  pull: always
+  image: plugins/docker:latest
+  settings:
+    repo: toolhippie/scw
+    tags: amd64
+    dockerfile: Dockerfile.amd64
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    event:
+      exclude:
+      - pull_request
 
-  gitter:
-    image: plugins/gitter:1
-    pull: true
-    secrets: [ gitter_webhook ]
-    when:
-      local: false
-      status: [ success, failure ]
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+---
+kind: pipeline
+name: arm32v6
+
+platform:
+  os: linux
+  arch: arm
+
+steps:
+- name: dryrun
+  pull: always
+  image: plugins/docker:latest
+  settings:
+    repo: toolhippie/scw
+    tags: arm32v6
+    dockerfile: Dockerfile.arm32v6
+    dry_run: true
+  when:
+    event:
+    - pull_request
+
+- name: publish
+  pull: always
+  image: plugins/docker:latest
+  settings:
+    repo: toolhippie/scw
+    tags: arm32v6
+    dockerfile: Dockerfile.arm32v6
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    event:
+      exclude:
+      - pull_request
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+---
+kind: pipeline
+name: arm64v8
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: dryrun
+  pull: always
+  image: plugins/docker:latest
+  settings:
+    repo: toolhippie/scw
+    tags: arm64v8
+    dockerfile: Dockerfile.arm64v8
+    dry_run: true
+  when:
+    event:
+    - pull_request
+
+- name: publish
+  pull: always
+  image: plugins/docker:latest
+  settings:
+    repo: toolhippie/scw
+    tags: arm64v8
+    dockerfile: Dockerfile.arm64v8
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    event:
+      exclude:
+      - pull_request
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+  - refs/pull/**
+
+---
+kind: pipeline
+name: manifest
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: manifest
+  pull: always
+  image: plugins/manifest:1
+  settings:
+    spec: manifest.tmpl
+    ignore_missing: true
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+
+depends_on:
+- amd64
+- arm32v6
+- arm64v8
+
+---
+kind: pipeline
+name: notification
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: microbadger
+  pull: always
+  image: plugins/webhook:1
+  settings:
+    urls:
+      from_secret: microbadger_url
+  when:
+    status:
+    - success
+
+- name: notify
+  image: plugins/matrix:1
+  pull: always
+  settings:
+    username:
+      from_secret: matrix_username
+    password:
+      from_secret: matrix_password
+    roomid:
+      from_secret: matrix_roomid
+  when:
+    status:
+    - failure
+
+depends_on:
+- amd64
+- arm32v6
+- arm64v8
+- manifest
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/**
+
+...

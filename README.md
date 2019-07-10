@@ -1,6 +1,6 @@
-# Scw
+# scw
 
-[![Build Status](https://github.dronehippie.de/api/badges/toolhippie/scw/status.svg)](https://github.dronehippie.de/toolhippie/scw)
+[![Build Status](https://cloud.drone.io/api/badges/toolhippie/scw/status.svg)](https://cloud.drone.io/toolhippie/scw)
 [![](https://images.microbadger.com/badges/image/toolhippie/scw:latest.svg)](https://microbadger.com/images/toolhippie/scw:latest "Get your own image badge on microbadger.com")
 
 TBD
