@@ -1,6 +1,6 @@
 FROM webhippie/golang:latest-arm64v8 AS build
 
-ENV SCW_PATH github.com/optiopay/klar
+ENV SCW_PATH github.com/scaleway/scaleway-cli
 ENV SCW_REPO https://${SCW_PATH}.git
 ENV SCW_BRANCH v2.4.0
 
