@@ -4,10 +4,8 @@ ENV SCW_PATH github.com/scaleway/scaleway-cli
 ENV SCW_REPO https://${SCW_PATH}.git
 ENV SCW_BRANCH v1.19
 
-RUN go get -u github.com/kardianos/govendor && \
-  git clone -b ${SCW_BRANCH} ${SCW_REPO} /srv/app/src/${SCW_PATH} && \
+RUN git clone -b ${SCW_BRANCH} ${SCW_REPO} /srv/app/src/${SCW_PATH} && \
   cd /srv/app/src/${SCW_PATH} && \
-  govendor sync && \
   GO111MODULE=off go install ./cmd/scw
 
 FROM webhippie/alpine:latest-arm64v8
