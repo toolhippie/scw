@@ -1,4 +1,4 @@
-FROM webhippie/golang:latest AS build
+FROM webhippie/golang:latest-amd64 AS build
 
 ENV SCW_PATH github.com/scaleway/scaleway-cli
 ENV SCW_REPO https://${SCW_PATH}.git
@@ -8,7 +8,7 @@ RUN git clone -b ${SCW_BRANCH} ${SCW_REPO} /srv/app/src/${SCW_PATH} && \
   cd /srv/app/src/${SCW_PATH} && \
   GO111MODULE=off go install ./cmd/scw
 
-FROM webhippie/alpine:latest
+FROM webhippie/alpine:latest-amd64
 
 LABEL maintainer="Thomas Boerger <thomas@webhippie.de>" \
   org.label-schema.name="Scw" \
