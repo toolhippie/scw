@@ -3,7 +3,10 @@
 [![Build Status](https://cloud.drone.io/api/badges/toolhippie/scw/status.svg)](https://cloud.drone.io/toolhippie/scw)
 [![](https://images.microbadger.com/badges/image/toolhippie/scw:latest.svg)](https://microbadger.com/images/toolhippie/scw:latest "Get your own image badge on microbadger.com")
 
-TBD
+**All these images are used for various scriptings, it's possible that any of these tools are updated randomly**
+
+* [GitHub](https://github.com/toolhippie/scw)
+* [Upstream](https://github.com/scaleway/scaleway-cli)
 
 
 ## Versions
