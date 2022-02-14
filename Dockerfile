@@ -1,7 +1,7 @@
 FROM webhippie/golang:1.16 AS build
 
 # renovate: datasource=github-tags depName=scaleway/scaleway-cli
-ENV SCW_VERSION=v2.3.1
+ENV SCW_VERSION=v2.4.0
 
 RUN git clone -b ${SCW_VERSION} https://github.com/scaleway/scaleway-cli.git /srv/app/src && \
   cd /srv/app/src && \
