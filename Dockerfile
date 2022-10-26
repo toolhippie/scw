@@ -1,4 +1,4 @@
-FROM webhippie/golang:1.18 AS build
+FROM webhippie/golang:1.19 AS build
 
 # renovate: datasource=github-tags depName=scaleway/scaleway-cli
 ENV SCW_VERSION=v2.6.1
