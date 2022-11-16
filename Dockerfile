@@ -1,12 +1,7 @@
 FROM webhippie/golang:1.19 AS build
 
-<<<<<<< Updated upstream
-# renovate: datasource=github-tags depName=scaleway/scaleway-cli
-ENV SCW_VERSION=v2.6.2
-=======
 # renovate: datasource=github-releases depName=scaleway/scaleway-cli
-ENV SCW_VERSION=2.5.3
->>>>>>> Stashed changes
+ENV SCW_VERSION=2.6.2
 
 RUN git clone -b v${SCW_VERSION} https://github.com/scaleway/scaleway-cli.git /srv/app/src && \
   cd /srv/app/src && \
