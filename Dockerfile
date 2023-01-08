@@ -7,7 +7,7 @@ RUN git clone -b v${SCW_VERSION} https://github.com/scaleway/scaleway-cli.git /s
   cd /srv/app/src && \
   GO111MODULE=on go install ./cmd/scw
 
-FROM webhippie/alpine:3.16
+FROM webhippie/alpine:3.17
 ENTRYPOINT [""]
 
 RUN apk update && \
