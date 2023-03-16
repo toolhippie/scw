@@ -1,4 +1,4 @@
-FROM ghcr.io/webhippie/golang:1.20 AS build
+FROM ghcr.io/dockhippie/golang:1.20 AS build
 
 # renovate: datasource=github-releases depName=scaleway/scaleway-cli
 ENV SCW_VERSION=2.12.0
@@ -7,7 +7,7 @@ RUN git clone -b v${SCW_VERSION} https://github.com/scaleway/scaleway-cli.git /s
   cd /srv/app/src && \
   GO111MODULE=on go install ./cmd/scw
 
-FROM ghcr.io/webhippie/alpine:3.17
+FROM ghcr.io/dockhippie/alpine:3.17
 ENTRYPOINT [""]
 
 RUN apk update && \
