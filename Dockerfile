@@ -1,4 +1,4 @@
-FROM ghcr.io/dockhippie/golang:1.21 AS build
+FROM ghcr.io/dockhippie/golang:1.23 AS build
 
 # renovate: datasource=github-releases depName=scaleway/scaleway-cli
 ENV SCW_VERSION=2.32.1
