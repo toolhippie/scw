@@ -1,7 +1,7 @@
 FROM ghcr.io/dockhippie/golang:1.25@sha256:28bfb54d5f96f0a194f2543ac115fe3d9ed48d0e546c60fa51189d17313f2206 AS build
 
 # renovate: datasource=github-releases depName=scaleway/scaleway-cli
-ENV SCW_VERSION=2.46.0
+ENV SCW_VERSION=2.47.0
 
 RUN git clone -b v${SCW_VERSION} https://github.com/scaleway/scaleway-cli.git /srv/app/src && \
   cd /srv/app/src && \
