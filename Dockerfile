@@ -1,4 +1,4 @@
-FROM ghcr.io/dockhippie/golang:1.25@sha256:b3021effd09e56deb82e6e3a79e027cebb78c9cee8f369536b8f66bbd11776dd AS build
+FROM ghcr.io/dockhippie/golang:1.25@sha256:77c2c44ee1faa7d3b2602d572a83f2fb8283feadfeb36e91657d6f9f334aefef AS build
 
 # renovate: datasource=github-releases depName=scaleway/scaleway-cli
 ENV SCW_VERSION=2.49.0
